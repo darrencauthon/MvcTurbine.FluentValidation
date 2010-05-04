@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AutoMoq;
 using MvcTurbine.ComponentModel;
 using NUnit.Framework;
 
@@ -9,14 +8,6 @@ namespace MvcTurbine.FluentValidation.Tests
     [TestFixture]
     public class ServiceLocatorValidatorFactoryTests
     {
-        private AutoMoqer mocker;
-
-        [SetUp]
-        public void TestSetup()
-        {
-            mocker = new AutoMoqer();
-        }
-
         [Test]
         public void Can_resolve_a_validator_after_adding_the_type()
         {

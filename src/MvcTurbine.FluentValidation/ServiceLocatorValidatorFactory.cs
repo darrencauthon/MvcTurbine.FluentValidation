@@ -19,18 +19,11 @@ namespace MvcTurbine.FluentValidation
 
         public void AddValidatorToBeResolved(Type validatorType)
         {
-            var fluentValidationIValidatorType = validatorType.GetInterfaces()
-                .Where(x => x.IsGenericType && x.FullName.StartsWith("FluentValidation.IValidator`1"))
-                .FirstOrDefault();
+            var genericValidatorType = GetTheGenericValidatorType(validatorType);
 
-            if (fluentValidationIValidatorType == null)
-                throw new ArgumentException("May only pass IValidator<T> to AddValidatorToBeResolved.");
+            ThrowAnExceptionIfThisIsNotAFluentValidator(genericValidatorType);
 
-            var typeToValidate = fluentValidationIValidatorType.GetGenericArguments()[0];
-            validatorMappings.Add(new ValidatorMapping{
-                                                          TypeToValidate = typeToValidate,
-                                                          ValidatorType = validatorType
-                                                      });
+            validatorMappings.Add(CreateTheValidatorMappingForTHisType(validatorType, genericValidatorType));
         }
 
         public IValidator<T> GetValidator<T>()
@@ -47,13 +40,49 @@ namespace MvcTurbine.FluentValidation
             return serviceLocator.Resolve(validatorType) as IValidator;
         }
 
-        private void ThrowInvalidExceptionIfNoValidatorHasBeenRegistered(Type type, Type validatorType)
+        private static ValidatorMapping CreateTheValidatorMappingForTHisType(Type validatorType, Type genericType)
+        {
+            return new ValidatorMapping{
+                                           TypeToValidate = GetTheTypeThatTheValidatorValidates(genericType),
+                                           ValidatorType = validatorType
+                                       };
+        }
+
+        private static void ThrowAnExceptionIfThisIsNotAFluentValidator(Type genericType)
+        {
+            if (ThisIsNotAGenericFluentValidator(genericType))
+                throw new ArgumentException("May only pass IValidator<T> to AddValidatorToBeResolved.");
+        }
+
+        private static Type GetTheTypeThatTheValidatorValidates(Type genericType)
+        {
+            return genericType.GetGenericArguments()[0];
+        }
+
+        private static bool ThisIsNotAGenericFluentValidator(Type genericType)
+        {
+            return genericType == null;
+        }
+
+        private static Type GetTheGenericValidatorType(Type validatorType)
+        {
+            return validatorType.GetInterfaces()
+                .Where(TheInterfaceIsAGenericValidator())
+                .FirstOrDefault();
+        }
+
+        private static Func<Type, bool> TheInterfaceIsAGenericValidator()
+        {
+            return x => x.IsGenericType && x.FullName.StartsWith("FluentValidation.IValidator`1");
+        }
+
+        private static void ThrowInvalidExceptionIfNoValidatorHasBeenRegistered(Type type, Type validatorType)
         {
             if (TheValidatorHasNotBeenAdded(validatorType))
                 throw new ArgumentException(string.Format("The {0} type was not registered with the validator factory.", type.Name));
         }
 
-        private bool TheValidatorHasNotBeenAdded(Type validatorType)
+        private static bool TheValidatorHasNotBeenAdded(Type validatorType)
         {
             return validatorType == null;
         }
