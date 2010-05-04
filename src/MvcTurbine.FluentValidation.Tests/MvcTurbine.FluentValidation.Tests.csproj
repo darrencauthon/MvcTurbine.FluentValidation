@@ -57,6 +57,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceLocatorValidatorFactoryTests.cs" />
+    <Compile Include="TestItemClasses.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MvcTurbine.FluentValidation\MvcTurbine.FluentValidation.csproj">
+      <Project>{87BBF249-4430-43C2-924B-09F56DBDA4BA}</Project>
+      <Name>MvcTurbine.FluentValidation</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
