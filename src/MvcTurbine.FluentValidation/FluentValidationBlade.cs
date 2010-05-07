@@ -33,7 +33,7 @@ namespace MvcTurbine.FluentValidation
             var validatorFactory = new ServiceLocatorValidatorFactory(serviceLocator);
 
             var retriever = new ValidatorRetriever();
-            foreach (var type in retriever.GetAllMessageHandlerTypes())
+            foreach (var type in retriever.GetAllValidatorTypes())
                 validatorFactory.AddValidatorToBeResolved(type);
 
             return new FluentValidationModelValidatorProvider(validatorFactory);
@@ -41,21 +41,30 @@ namespace MvcTurbine.FluentValidation
 
         private class ValidatorRetriever
         {
-            public IEnumerable<Type> GetAllMessageHandlerTypes()
+            public IEnumerable<Type> GetAllValidatorTypes()
             {
                 var list = new List<Type>();
 
                 foreach (var assembly in GetAllAssemblies())
-                    list.AddRange(GetAllMessageHandlersInThisAssembly(assembly));
+                    list.AddRange(GetAllValidatorsInThisAssembly(assembly));
 
                 return list;
             }
 
-            private static IEnumerable<Type> GetAllMessageHandlersInThisAssembly(Assembly assembly)
+            private static IEnumerable<Type> GetAllValidatorsInThisAssembly(Assembly assembly)
             {
-
                 return assembly.GetTypes()
-                    .Where(x => x.GetInterfaces() != null && x.GetInterfaces().Any(i => (i.FullName ?? string.Empty).StartsWith("FluentValidation.IValidator`1")));
+                    .Where(x => ThisTypeImplementsAnInterface(x) && ThisTypeIsAValidator(x));
+            }
+
+            private static bool ThisTypeImplementsAnInterface(Type x)
+            {
+                return x.GetInterfaces() != null;
+            }
+
+            private static bool ThisTypeIsAValidator(Type x)
+            {
+                return x.GetInterfaces().Any(i => (i.FullName ?? string.Empty).StartsWith("FluentValidation.IValidator`1"));
             }
 
             private static IEnumerable<Assembly> GetAllAssemblies()
