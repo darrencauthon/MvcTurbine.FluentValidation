@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using MvcTurbine.ComponentModel;
+using MvcTurbine.FluentValidation.Helpers;
 using NUnit.Framework;
 
-namespace MvcTurbine.FluentValidation.Tests
+namespace MvcTurbine.FluentValidation.Tests.Helpers
 {
     [TestFixture]
     public class ServiceLocatorValidatorFactoryTests

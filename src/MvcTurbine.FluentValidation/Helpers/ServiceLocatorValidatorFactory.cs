@@ -4,7 +4,7 @@ using System.Linq;
 using FluentValidation;
 using MvcTurbine.ComponentModel;
 
-namespace MvcTurbine.FluentValidation
+namespace MvcTurbine.FluentValidation.Helpers
 {
     public class ServiceLocatorValidatorFactory : IValidatorFactory
     {

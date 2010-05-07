@@ -50,9 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ServiceLocatorValidatorFactory.cs" />
+    <Compile Include="Helpers\ServiceLocatorValidatorFactory.cs" />
     <Compile Include="FluentValidationBlade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Helpers\ValidatorRetriever.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
