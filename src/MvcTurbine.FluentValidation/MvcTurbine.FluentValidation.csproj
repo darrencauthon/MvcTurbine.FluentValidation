@@ -36,7 +36,7 @@
       <HintPath>..\..\lib\FluentValidation\FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="FluentValidation.Mvc">
-      <HintPath>..\..\lib\FluentValidation\MVC\MVC2\FluentValidation.Mvc.dll</HintPath>
+      <HintPath>..\..\lib\FluentValidation\MVC2\FluentValidation.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="MvcTurbine">
       <HintPath>..\..\lib\MvcTurbine\MvcTurbine.dll</HintPath>
