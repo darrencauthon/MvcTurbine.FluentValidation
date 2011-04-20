@@ -1,0 +1,28 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="AE021CE3-F69E-4740-9120-52E5F2E09E45/d:Helpers/f:ServiceLocatorValidatorFactoryTests.cs" caret="5886" fromTop="7" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="AE021CE3-F69E-4740-9120-52E5F2E09E45/d:Helpers/f:ServiceLocatorValidatorFactoryTests.cs" caret="6175" fromTop="12" />
+      <File id="AE021CE3-F69E-4740-9120-52E5F2E09E45/d:Helpers/f:ServiceLocatorValidatorFactoryTests.cs" caret="5012" fromTop="12" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir>C:\Program Files\NUnit 2.5.4\bin\net-2.0\</NUnitInstallDir>
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+</Configuration>

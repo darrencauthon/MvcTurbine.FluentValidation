@@ -173,6 +173,11 @@ namespace MvcTurbine.FluentValidation.Tests.Helpers
                 throw new NotImplementedException();
             }
 
+            public IList<object> ResolveServices(Type type)
+            {
+                throw new NotImplementedException();
+            }
+
             public IServiceRegistrar Batch()
             {
                 throw new NotImplementedException();
@@ -204,6 +209,11 @@ namespace MvcTurbine.FluentValidation.Tests.Helpers
             }
 
             public void Register<Interface>(Interface instance) where Interface : class
+            {
+                throw new NotImplementedException();
+            }
+
+            public void Register<Interface>(Func<Interface> factoryMethod) where Interface : class
             {
                 throw new NotImplementedException();
             }
