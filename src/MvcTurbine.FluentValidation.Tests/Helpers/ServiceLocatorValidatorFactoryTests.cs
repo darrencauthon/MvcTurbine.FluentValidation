@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AssemblyForTesting;
 using MvcTurbine.ComponentModel;
 using MvcTurbine.FluentValidation.Helpers;
 using NUnit.Framework;
@@ -13,29 +14,11 @@ namespace MvcTurbine.FluentValidation.Tests.Helpers
         public void Can_resolve_a_validator_after_adding_the_type()
         {
             var serviceLocator = new TestServiceLocator();
-            var factory = new ServiceLocatorValidatorFactory(serviceLocator);
+            ServiceLocatorManager.SetLocatorProvider(() => serviceLocator);
+            var factory = new ServiceLocatorValidatorFactory();
 
-            var validatorType = typeof (TestItemValidator);
-            var typeToValidate = typeof (TestItem);
-
-            factory.AddValidatorToBeResolved(validatorType);
-
-            factory.GetValidator(typeToValidate);
-
-            Assert.AreEqual(validatorType, serviceLocator.TypeThatWasResolved);
-        }
-
-        [Test]
-        public void Resolves_the_correct_type_when_multiple_validators_are_added()
-        {
-            var serviceLocator = new TestServiceLocator();
-            var factory = new ServiceLocatorValidatorFactory(serviceLocator);
-
-            var validatorType = typeof (TestItemValidator);
-            var typeToValidate = typeof (TestItem);
-
-            factory.AddValidatorToBeResolved(validatorType);
-            factory.AddValidatorToBeResolved(typeof (SecondTestItemValidator));
+            var validatorType = typeof(Class2Validator);
+            var typeToValidate = typeof (Class2InputModel);
 
             factory.GetValidator(typeToValidate);
 
@@ -43,100 +26,20 @@ namespace MvcTurbine.FluentValidation.Tests.Helpers
         }
 
         [Test]
-        public void Throws_an_exception_if_something_other_than_a_validator_is_added()
-        {
-            var factory = CreateAServiceLocatorFactory();
-
-            var expectedExceptionWasHit = false;
-            try
-            {
-                factory.AddValidatorToBeResolved(typeof (string));
-            }
-            catch (ArgumentException argumentException)
-            {
-                if (argumentException.Message == "May only pass IValidator<T> to AddValidatorToBeResolved.")
-                    expectedExceptionWasHit = true;
-            }
-
-            Assert.IsTrue(expectedExceptionWasHit, "Did not get the expected exception from AddValidatorToBeResolved.");
-        }
-
-        [Test]
-        public void Throws_an_exception_if_attempts_to_resolve_a_validator_that_was_not_added()
-        {
-            var factory = CreateAServiceLocatorFactory();
-            var typeForTesting = typeof (TestItem);
-
-            var expectedExceptionWasHit = false;
-            try
-            {
-                factory.GetValidator(typeForTesting);
-            }
-            catch (ArgumentException argumentException)
-            {
-                if (argumentException.Message == "The TestItem type was not registered with the validator factory.")
-                    expectedExceptionWasHit = true;
-            }
-
-            Assert.IsTrue(expectedExceptionWasHit, "Did not get the expected exception from GetValidator.");
-        }
-
-        [Test]
-        public void Generic__Can_resolve_a_validator_after_adding_the_type()
+        public void Returns_null_when_there_is_no_validator()
         {
             var serviceLocator = new TestServiceLocator();
-            var factory = new ServiceLocatorValidatorFactory(serviceLocator);
+            ServiceLocatorManager.SetLocatorProvider(() => serviceLocator);
+            var factory = new ServiceLocatorValidatorFactory();
 
-            var validatorType = typeof (TestItemValidator);
+            var typeToValidate = typeof(ClassWithNoValidator);
 
-            factory.AddValidatorToBeResolved(validatorType);
+            factory.GetValidator(typeToValidate);
 
-            factory.GetValidator<TestItem>();
-
-            Assert.AreEqual(validatorType, serviceLocator.TypeThatWasResolved);
+            Assert.IsNull(serviceLocator.TypeThatWasResolved);
         }
 
-        [Test]
-        public void Generic__Resolves_the_correct_type_when_multiple_validators_are_added()
-        {
-            var serviceLocator = new TestServiceLocator();
-            var factory = new ServiceLocatorValidatorFactory(serviceLocator);
-
-            var validatorType = typeof (TestItemValidator);
-
-            factory.AddValidatorToBeResolved(validatorType);
-            factory.AddValidatorToBeResolved(typeof (SecondTestItemValidator));
-
-            factory.GetValidator<TestItem>();
-
-            Assert.AreEqual(validatorType, serviceLocator.TypeThatWasResolved);
-        }
-
-        [Test]
-        public void Generic__Throws_an_exception_if_attempts_to_resolve_a_validator_that_was_not_added()
-        {
-            var factory = CreateAServiceLocatorFactory();
-
-            var expectedExceptionWasHit = false;
-            try
-            {
-                factory.GetValidator<TestItem>();
-            }
-            catch (ArgumentException argumentException)
-            {
-                if (argumentException.Message == "The TestItem type was not registered with the validator factory.")
-                    expectedExceptionWasHit = true;
-            }
-
-            Assert.IsTrue(expectedExceptionWasHit, "Did not get the expected exception from GetValidator.");
-        }
-
-        private ServiceLocatorValidatorFactory CreateAServiceLocatorFactory()
-        {
-            var serviceLocator = new TestServiceLocator();
-            return new ServiceLocatorValidatorFactory(serviceLocator);
-        }
-
+        
         public class TestServiceLocator : IServiceLocator
         {
             public Type TypeThatWasResolved { get; set; }
