@@ -25,6 +25,20 @@ namespace MvcTurbine.FluentValidation.Tests.Helpers
             Assert.AreEqual(validatorType, serviceLocator.TypeThatWasResolved);
         }
 
+        [Test]
+        public void Returns_null_when_there_is_no_validator()
+        {
+            var serviceLocator = new TestServiceLocator();
+            ServiceLocatorManager.SetLocatorProvider(() => serviceLocator);
+            var factory = new ServiceLocatorValidatorFactory();
+
+            var typeToValidate = typeof(ClassWithNoValidator);
+
+            factory.GetValidator(typeToValidate);
+
+            Assert.IsNull(serviceLocator.TypeThatWasResolved);
+        }
+
         
         public class TestServiceLocator : IServiceLocator
         {

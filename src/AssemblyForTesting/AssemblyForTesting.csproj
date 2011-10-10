@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Class2Validator.cs" />
     <Compile Include="Class1Validator.cs" />
+    <Compile Include="ClassWithNoValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
